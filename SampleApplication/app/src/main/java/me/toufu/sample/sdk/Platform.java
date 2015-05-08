@@ -1,6 +1,7 @@
 package me.toufu.sample.sdk;
 
 import android.content.Context;
+import android.os.HandlerThread;
 
 import me.toufu.sample.platform.PlatformImpl;
 import me.toufu.sample.platform.model.AccountInfo;
@@ -11,7 +12,6 @@ import me.toufu.sample.platform.model.OrderInfo;
  * Created by zhenghu on 15-4-29.
  */
 public class Platform {
-
     /**
      * 完成应用初始化，获取并保存应用必要信息
      * @param context

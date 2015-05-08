@@ -1,6 +1,8 @@
 package me.toufu.sample.platform;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import me.toufu.sample.platform.model.AccountInfo;
 import me.toufu.sample.platform.model.AppInfo;
@@ -24,6 +26,9 @@ public class PlatformImpl {
     // 记录用户相关信息，暂时以手机区分用户
     private AccountInfo mAccountInfo;
 
+    private HandlerThread mTaskThread;
+    private Handler mTaskHandler;
+
     private PlatformImpl() {
     }
 
@@ -38,14 +43,17 @@ public class PlatformImpl {
         context = context.getApplicationContext();
         mAppInfo = new AppInfo(appId, appKey, context.getPackageName());
         mAccountInfo = new AccountInfo(PhoneUtil.getImei(context), PhoneUtil.getSn());
+        mTaskThread = new HandlerThread("PlatformThread");
+        mTaskThread.start();
+        mTaskHandler = new Handler(mTaskThread.getLooper());
     }
 
     public void validateApp(Context context, ValidateResponse validateResponse) {
-        LicenseInfo contentLocal = getContentFromLocal();
         LicenseInfo contentNet = null;
         if (NetworkUtil.isNetworkConnected(context)) {
             contentNet = getContentFromNet();
         }
+        LicenseInfo contentLocal = getContentFromLocal();
 
         LicenseInfo aimContent = compareContent(contentLocal, contentNet);
         if (aimContent != null) {
@@ -96,5 +104,9 @@ public class PlatformImpl {
     private ProductInfo parseProductInfo(LicenseInfo info) {
         // TODO：从license解析出产品信息
         return null;
+    }
+
+    private void runOnTask(Runnable runnable) {
+        mTaskHandler.post(runnable);
     }
 }
