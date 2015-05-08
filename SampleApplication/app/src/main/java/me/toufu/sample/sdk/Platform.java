@@ -22,19 +22,15 @@ public class Platform {
         PlatformImpl.getInstance().init(context, appId, appKey);
     }
 
-    public static void validateApp() {
+    public static void validateApp(ValidateResponse validateResponse) {
 
     }
 
-    public static void checkLiscense() {
+    public static void pay(AppInfo appInfo, AccountInfo accountInfo, OrderInfo orderInfo, PayResponse payResponse) {
 
     }
 
-    public static void pay(AppInfo appInfo, AccountInfo accountInfo, OrderInfo orderInfo, PayResult payListener) {
-
-    }
-
-    public static void obtainTradeRecords(AccountInfo accountInfo, TradeListResult tradeListResult) {
+    public static void obtainTradeRecords(AccountInfo accountInfo, TradeRecordResponse tradeRecordResponse) {
 
     }
 }
