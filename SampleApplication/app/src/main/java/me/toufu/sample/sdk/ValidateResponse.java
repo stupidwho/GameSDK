@@ -10,4 +10,6 @@ public interface ValidateResponse {
     public static final int RESULT_ERROR_APP = -3;
     public static final int RESULT_ERROR_CONTENT = -4;
     public static final int RESULT_ERROR_UNKNOWN = -5;
+
+    public void onResult(int code, String content);
 }

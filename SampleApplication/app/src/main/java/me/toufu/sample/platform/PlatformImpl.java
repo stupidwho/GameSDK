@@ -2,8 +2,6 @@ package me.toufu.sample.platform;
 
 import android.content.Context;
 
-import java.io.File;
-
 import me.toufu.sample.platform.model.AccountInfo;
 import me.toufu.sample.platform.model.AppInfo;
 import me.toufu.sample.platform.model.LicenseInfo;
@@ -14,7 +12,7 @@ import me.toufu.sample.sdk.TradeRecordResponse;
 import me.toufu.sample.sdk.ValidateResponse;
 import me.toufu.sample.utils.NetworkUtil;
 import me.toufu.sample.utils.PhoneUtil;
-import me.toufu.sample.utils.StringConstants;
+import me.toufu.sample.utils.SignatureUtil;
 
 /**
  * Created by zhenghu on 15-5-5.
@@ -58,19 +56,21 @@ public class PlatformImpl {
 
     private LicenseInfo getContentFromNet() {
         // TODO：从服务器获取数据
-        return null;
+        String content = "";
+        LicenseInfo info = ValidateHelper.parseLicenseInfo(content);
+        return info;
     }
 
     private LicenseInfo getContentFromLocal(Context context) {
         String content = FileManager.getLicense(context);
-        LicenseInfo info = ValidateHelper.getLicenseInfo(content);
+        LicenseInfo info = ValidateHelper.parseLicenseInfo(content);
         return info;
     }
 
     private LicenseInfo validateContent(LicenseInfo contentLocal, LicenseInfo contentNet, ValidateResponse validateResponse) {
         // TODO：返回应该解析的内容，返回null不作处理
         if (contentLocal == null && contentNet == null) {
-            // TODO：回调ValidateResponse.RESULT_ERROR_CONTENT;
+            validateResponse.onResult(ValidateResponse.RESULT_ERROR_CONTENT, "内容解析错误");
         } else if (contentLocal == null && contentNet != null) {
             // TODO：返回contentNet
         } else if (contentLocal != null && contentNet == null) {
@@ -83,6 +83,16 @@ public class PlatformImpl {
 
     private void validate(LicenseInfo info, ValidateResponse validateResponse) {
         // TODO：根据info验证是否通过，通过validateResponse返回结果
+        if (isLegal(info)) {
+
+        } else {
+
+        }
+    }
+
+    private boolean isLegal(LicenseInfo info) {
+        String content = "";
+        return SignatureUtil.isSignatureLegal(content, "", "");
     }
 
     public void pay(Context context, AppInfo appInfo, AccountInfo accountInfo, OrderInfo orderInfo, PayResponse payResponse) {
@@ -95,17 +105,18 @@ public class PlatformImpl {
     }
 
     public void obtainTradeRecords(Context context, AccountInfo accountInfo, TradeRecordResponse tradeRecordResponse) {
-        ProductInfo productInfo = parseProductInfo(readFromLocal());
+        ProductInfo productInfo = parseProductInfo(getContentFromLocal(context));
         // TODO：操作返回结果列表
-    }
-
-    private LicenseInfo readFromLocal() {
-        // TODO：从文件读取License信息
-        return null;
+        if (productInfo != null) {
+        } else {
+            tradeRecordResponse.onResult(TradeRecordResponse.TRADE_RESULT_ERROR_CONTENT, "解析错误", null);
+        }
     }
 
     private ProductInfo parseProductInfo(LicenseInfo info) {
         // TODO：从license解析出产品信息
+        if (info == null)
+            return null;
         return null;
     }
 }
