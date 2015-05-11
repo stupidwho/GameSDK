@@ -22,8 +22,8 @@ public class SignatureUtil {
             PublicKey publicKey;
             publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(Base64.decode(strPublicKey, Base64.DEFAULT)));
             sign.initVerify(publicKey);
-            sign.update(ciphertext.getBytes());
-            sign.verify(content.getBytes());
+            sign.update(content.getBytes());
+            return sign.verify(ciphertext.getBytes());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeySpecException e) {

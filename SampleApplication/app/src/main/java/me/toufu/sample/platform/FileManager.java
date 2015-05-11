@@ -66,7 +66,7 @@ public class FileManager {
         return null;
     }
 
-    public static void saveLicense(Context context) {
+    public static void saveLicense(Context context, String content) {
 
     }
 }
