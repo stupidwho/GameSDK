@@ -1,8 +1,8 @@
 package me.toufu.sample.platform;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.HandlerThread;
+
+import java.io.File;
 
 import me.toufu.sample.platform.model.AccountInfo;
 import me.toufu.sample.platform.model.AppInfo;
@@ -14,6 +14,7 @@ import me.toufu.sample.sdk.TradeRecordResponse;
 import me.toufu.sample.sdk.ValidateResponse;
 import me.toufu.sample.utils.NetworkUtil;
 import me.toufu.sample.utils.PhoneUtil;
+import me.toufu.sample.utils.StringConstants;
 
 /**
  * Created by zhenghu on 15-5-5.
@@ -47,13 +48,11 @@ public class PlatformImpl {
         if (NetworkUtil.isNetworkConnected(context)) {
             contentNet = getContentFromNet();
         }
-        LicenseInfo contentLocal = getContentFromLocal();
+        LicenseInfo contentLocal = getContentFromLocal(context);
 
-        LicenseInfo aimContent = compareContent(contentLocal, contentNet);
+        LicenseInfo aimContent = validateContent(contentLocal, contentNet, validateResponse);
         if (aimContent != null) {
             validate(aimContent, validateResponse);
-        } else {
-
         }
     }
 
@@ -62,13 +61,23 @@ public class PlatformImpl {
         return null;
     }
 
-    private LicenseInfo getContentFromLocal() {
-        // TODO：从本地获取license内容
-        return null;
+    private LicenseInfo getContentFromLocal(Context context) {
+        String content = FileManager.getLicense(context);
+        LicenseInfo info = ValidateHelper.getLicenseInfo(content);
+        return info;
     }
 
-    private LicenseInfo compareContent(LicenseInfo contentLocal, LicenseInfo contentNet) {
-        // TODO：返回应该解析的内容，有错则返回null
+    private LicenseInfo validateContent(LicenseInfo contentLocal, LicenseInfo contentNet, ValidateResponse validateResponse) {
+        // TODO：返回应该解析的内容，返回null不作处理
+        if (contentLocal == null && contentNet == null) {
+            // TODO：回调ValidateResponse.RESULT_ERROR_CONTENT;
+        } else if (contentLocal == null && contentNet != null) {
+            // TODO：返回contentNet
+        } else if (contentLocal != null && contentNet == null) {
+            // TODO：检查时效，返回无网络内容
+        } else {
+            // TODO：比较时间戳
+        }
         return null;
     }
 
