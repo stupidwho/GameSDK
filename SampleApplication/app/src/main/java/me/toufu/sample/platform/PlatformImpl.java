@@ -29,6 +29,7 @@ public class PlatformImpl {
     private Handler mUiHandler;
 
     private PlatformImpl() {
+        mUiHandler = new Handler(Looper.getMainLooper());
     }
 
     public static PlatformImpl getInstance() {
@@ -42,7 +43,6 @@ public class PlatformImpl {
         context = context.getApplicationContext();
         mAppInfo = new AppInfo(appId, appKey, context.getPackageName());
         mAccountInfo = new AccountInfo(PhoneUtil.getImei(context), PhoneUtil.getSn());
-        mUiHandler = new Handler(Looper.getMainLooper());
     }
 
     public void validateApp(Context context, final ValidateResponse validateResponse) {
