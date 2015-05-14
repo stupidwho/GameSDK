@@ -15,15 +15,15 @@ import java.security.spec.X509EncodedKeySpec;
  * Created by zhenghu on 15-5-11.
  */
 public class SignatureUtil {
-    public static boolean isSignatureLegal(String content, String ciphertext, String strPublicKey) {
+    public static boolean isSignatureLegal(byte content[], byte signature[], String strPublicKey) {
         try {
             Signature sign = Signature.getInstance("SHA1WithRSA");
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PublicKey publicKey;
             publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(Base64.decode(strPublicKey, Base64.DEFAULT)));
             sign.initVerify(publicKey);
-            sign.update(content.getBytes());
-            return sign.verify(ciphertext.getBytes());
+            sign.update(content);
+            return sign.verify(signature);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeySpecException e) {
