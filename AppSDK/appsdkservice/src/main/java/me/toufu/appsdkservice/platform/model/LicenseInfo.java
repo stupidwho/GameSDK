@@ -1,5 +1,7 @@
 package me.toufu.appsdkservice.platform.model;
 
+import java.util.List;
+
 import me.toufu.appsdkservice.sdk.ProductInfo;
 
 /**
@@ -17,7 +19,7 @@ public class LicenseInfo {
     public String imei;
     public String sn;
 
-    public ProductInfo productInfo;
+    public List<ProductInfo> productInfos;
 
     public String toString() {
         return null;
