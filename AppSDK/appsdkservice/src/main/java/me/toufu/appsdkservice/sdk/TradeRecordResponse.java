@@ -1,4 +1,4 @@
-package me.toufu.appsdklib.sdk;
+package me.toufu.appsdkservice.sdk;
 
 /**
  * Created by zhenghu on 15-5-8.

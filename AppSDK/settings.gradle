@@ -1,1 +1,1 @@
-include ':appsdklib', ':appdemo'
+include ':appsdklib', ':appdemo', ':appsdkservice'
