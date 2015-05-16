@@ -2,7 +2,7 @@ package me.toufu.appsdkservice.platform.model;
 
 import java.util.List;
 
-import me.toufu.appsdkservice.sdk.ProductInfo;
+import me.toufu.sdk.ProductInfo;
 
 /**
  * Created by zhenghu on 15-5-8.
