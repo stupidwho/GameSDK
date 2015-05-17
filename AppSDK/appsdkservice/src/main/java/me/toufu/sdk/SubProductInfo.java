@@ -7,6 +7,10 @@ import android.os.Parcelable;
  * Created by zhenghu on 15-5-15.
  */
 public class SubProductInfo implements Parcelable{
+    public static final int SUBPRODUCT_TYPE_ALL = 0;
+    public static final int SUBPRODUCT_TYPE_CONSUMER = 1;
+    public static final int SUBPRODUCT_TYPE_NOT_CONSUMER = 2;
+
     public boolean isConsumer;
     public int price;
     public String subId;

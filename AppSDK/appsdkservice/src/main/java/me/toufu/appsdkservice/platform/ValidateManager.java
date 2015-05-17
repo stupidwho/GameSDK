@@ -2,11 +2,12 @@ package me.toufu.appsdkservice.platform;
 
 import android.content.Context;
 
-import me.toufu.sample.platform.model.LicenseInfo;
-import me.toufu.sample.sdk.ValidateResponse;
-import me.toufu.sample.sdk.ValidateResult;
-import me.toufu.sample.utils.NetworkUtil;
-import me.toufu.sample.utils.SignatureUtil;
+import me.toufu.appsdkservice.platform.model.LicenseInfo;
+import me.toufu.appsdkservice.utils.NetworkUtil;
+import me.toufu.appsdkservice.utils.SignatureUtil;
+import me.toufu.sdk.AccountInfo;
+import me.toufu.sdk.ValidateResponse;
+import me.toufu.sdk.ValidateResult;
 
 /**
  * Created by zhenghu on 15-5-11.
@@ -26,11 +27,11 @@ public class ValidateManager {
         if (NetworkUtil.isNetworkConnected(mContext)) {
             contentNet = getContentFromNet();
         } else {
-            mValidateResult.code = ValidateResponse.RESULT_ERROR_NETWORK;
+            mValidateResult.code = ValidateResponse.RESULT_ERROR_NETWORK_UNAVAILABLE;
             mValidateResult.message = "网络错误";
         }
 
-        LicenseInfo contentLocal = getContentFromLocal(mContext);
+        LicenseInfo contentLocal = getContentFromLocal();
         LicenseInfo aimContent = compareContent(contentLocal, contentNet);
         if (aimContent != null) {
             if (isLegal(aimContent)) {
@@ -45,17 +46,26 @@ public class ValidateManager {
         return mValidateResult;
     }
 
-    public static LicenseInfo getContentFromNet() {
-        // TODO：从服务器获取数据
-        String content = "";
-        LicenseInfo info = ValidateHelper.parseLicenseInfo(content);
-        return info;
+    public LicenseInfo getContentFromNet() {
+        // 从服务器获取数据
+        String content = NetworkManager.getInstance(mContext).getLicenseInfo();
+        return getLicenseInfoFromString(content);
     }
 
-    public static LicenseInfo getContentFromLocal(Context context) {
-        String content = FileManager.getLicense(context);
+    public LicenseInfo getContentFromLocal() {
+        // 从本地获取数据
+        String content = FileManager.getLicense(mContext);
+        return getLicenseInfoFromString(content);
+    }
+
+    public LicenseInfo getLicenseInfoFromString(String content) {
         LicenseInfo info = ValidateHelper.parseLicenseInfo(content);
-        return info;
+        if (info != null) {
+            if (ValidateHelper.validateSignature(info)) {
+                return info;
+            }
+        }
+        return null;
     }
 
     private LicenseInfo compareContent(LicenseInfo contentLocal, LicenseInfo contentNet) {
@@ -72,6 +82,6 @@ public class ValidateManager {
     // 验证签名是否合法
     private boolean isLegal(LicenseInfo info) {
         String content = "";
-        return SignatureUtil.isSignatureLegal(content, "", "");
+        return SignatureUtil.isSignatureLegal(null, null, null);
     }
 }

@@ -1,15 +1,19 @@
 package me.toufu.appsdkservice.platform;
 
-import me.toufu.sample.platform.model.LicenseInfo;
+import me.toufu.appsdkservice.platform.model.LicenseInfo;
 
 /**
  * Created by zhenghu on 15-5-9.
  */
 public class ValidateHelper {
+    public static boolean validateSignature(LicenseInfo info) {
+        return true;
+    }
+
     public static LicenseInfo parseLicenseInfo(String content) {
-        // TODO：RSA解密并解析解构，解析失败返回空，表示密钥无效/保存内容出错
-        if (content == null)
-            return null;
+        if (content != null) {
+            // TODO：解析解构，解析失败返回空，表示内容出错
+        }
         return null;
     }
 }

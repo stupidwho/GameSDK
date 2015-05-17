@@ -19,7 +19,7 @@ public class LicenseInfo {
     public String imei;
     public String sn;
 
-    public List<ProductInfo> productInfos;
+    public ProductInfo productInfo;
 
     public String toString() {
         return null;

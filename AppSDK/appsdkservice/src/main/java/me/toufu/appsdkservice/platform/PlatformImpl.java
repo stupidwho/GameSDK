@@ -4,27 +4,24 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import me.toufu.sample.platform.model.AccountInfo;
-import me.toufu.sample.platform.model.AppInfo;
-import me.toufu.sample.platform.model.LicenseInfo;
-import me.toufu.sample.platform.model.OrderInfo;
-import me.toufu.sample.platform.model.ProductInfo;
-import me.toufu.sample.sdk.PayResponse;
-import me.toufu.sample.sdk.TradeRecordResponse;
-import me.toufu.sample.sdk.ValidateResponse;
-import me.toufu.sample.sdk.ValidateResult;
-import me.toufu.sample.utils.PhoneUtil;
+import java.util.List;
+
+import me.toufu.appsdkservice.platform.model.LicenseInfo;
+import me.toufu.appsdkservice.utils.PhoneUtil;
+import me.toufu.sdk.AccountInfo;
+import me.toufu.sdk.AppInfo;
+import me.toufu.sdk.OrderInfo;
+import me.toufu.sdk.PayResponse;
+import me.toufu.sdk.ProductInfo;
+import me.toufu.sdk.TradeRecordResponse;
+import me.toufu.sdk.ValidateResponse;
+import me.toufu.sdk.ValidateResult;
 
 /**
  * Created by zhenghu on 15-5-5.
  */
 public class PlatformImpl {
     private static PlatformImpl sPlatform;
-
-    // 记录应用相关信息
-    private AppInfo mAppInfo;
-    // 记录用户相关信息，暂时以手机区分用户
-    private AccountInfo mAccountInfo;
 
     private Handler mUiHandler;
 
@@ -41,8 +38,8 @@ public class PlatformImpl {
 
     public void init(Context context, String appId, String appKey) {
         context = context.getApplicationContext();
-        mAppInfo = new AppInfo(appId, appKey, context.getPackageName());
-        mAccountInfo = new AccountInfo(PhoneUtil.getImei(context), PhoneUtil.getSn());
+        AppInfoManager.getInstance().appInfo = new AppInfo(appId, appKey, context.getPackageName());
+        AppInfoManager.getInstance().accountInfo = new AccountInfo(PhoneUtil.getImei(context), PhoneUtil.getSn());
     }
 
     public void validateApp(Context context, final ValidateResponse validateResponse) {
@@ -65,8 +62,9 @@ public class PlatformImpl {
 
     }
 
-    public void obtainTradeRecords(Context context, AccountInfo accountInfo, TradeRecordResponse tradeRecordResponse) {
-        ProductInfo productInfo = parseProductInfo(ValidateManager.getContentFromLocal(context));
+    public void obtainTradeRecords(Context context, TradeRecordResponse tradeRecordResponse) {
+        ValidateManager validateManager = new ValidateManager(context);
+        ProductInfo productInfo = getListProductInfo(validateManager.getContentFromLocal());
         if (productInfo != null) {
             tradeRecordResponse.onResult(TradeRecordResponse.TRADE_RESULT_NOPROBLEM, "获取成功", productInfo);
         } else {
@@ -74,11 +72,8 @@ public class PlatformImpl {
         }
     }
 
-    private ProductInfo parseProductInfo(LicenseInfo info) {
-        // TODO：从license解析出产品信息
-        if (info == null)
-            return null;
-        return null;
+    private ProductInfo getListProductInfo(LicenseInfo info) {
+        return info.productInfo;
     }
 
     private void runOnUi(Runnable runnable) {
