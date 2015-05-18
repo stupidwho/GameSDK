@@ -1,5 +1,6 @@
 package me.toufu.appsdklib.platform;
 
+import android.app.DownloadManager;
 import android.content.Context;
 
 import me.toufu.sdk.AccountInfo;
