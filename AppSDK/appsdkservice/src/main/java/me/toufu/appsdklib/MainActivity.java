@@ -1,13 +1,9 @@
-package me.toufu.appdemo;
+package me.toufu.appsdklib;
 
-import android.app.AlertDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import me.toufu.sdk.Platform;
-import me.toufu.sdk.ValidateResponse;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -16,24 +12,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Platform.init(MainActivity.this, AppConstants.appId, AppConstants.appKey);
-
-        Platform.validateApp(MainActivity.this, new ValidateResponse() {
-            @Override
-            public void onResult(int code, String content) {
-                switch(code) {
-                    case ValidateResponse.RESULT_NOPROBLEM:
-                        break;
-                    case ValidateResponse.RESULT_ERROR_NETWORK_UNAVAILABLE:
-                        break;
-                    case ValidateResponse.RESULT_ERROR_UNKNOWN:
-                        break;
-                    case ValidateResponse.RESULT_ERROR_VALIDATE:
-                        break;
-                }
-                WidgetHelper.showMessageDialog(MainActivity.this, "验证结果：", content);
-            }
-        });
     }
 
     @Override
