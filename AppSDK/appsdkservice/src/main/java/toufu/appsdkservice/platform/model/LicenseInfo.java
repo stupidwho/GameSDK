@@ -1,4 +1,4 @@
-package me.toufu.appsdklib.platform.model;
+package toufu.appsdkservice.platform.model;
 
 import me.toufu.sdk.ProductInfo;
 
@@ -6,8 +6,8 @@ import me.toufu.sdk.ProductInfo;
  * Created by zhenghu on 15-5-8.
  */
 public class LicenseInfo {
-    public String signature;
-    public String content;
+    public byte signature[];
+    public byte content[];
 
     public long timeStamp;
     public String appId;

@@ -1,4 +1,4 @@
-package me.toufu.sdk;
+package toufu.sdk;
 
 import android.os.Parcel;
 import android.os.Parcelable;

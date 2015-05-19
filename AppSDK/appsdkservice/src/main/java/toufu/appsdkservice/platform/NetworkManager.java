@@ -1,13 +1,6 @@
-package me.toufu.appsdklib.platform;
+package toufu.appsdkservice.platform;
 
 import android.content.Context;
-import android.util.Log;
-
-import me.toufu.appsdklib.http.BaseException;
-import me.toufu.appsdklib.http.ICallback;
-import me.toufu.appsdklib.http.RequestBuilder;
-import me.toufu.sdk.AccountInfo;
-import me.toufu.sdk.AppInfo;
 
 /**
  * Created by toufu on 15-5-17.
@@ -33,16 +26,14 @@ public class NetworkManager {
 
     public String getLicenseInfo() {
         // TODO：从服务端获取LicenseInfo
-        AppInfo appInfo = AppInfoManager.getInstance().appInfo;
+        /*AppInfo appInfo = AppInfoManager.getInstance().appInfo;
         AccountInfo accountInfo = AppInfoManager.getInstance().accountInfo;
         try {
-            return RequestBuilder.createRequest("r=user/view&imei=" + accountInfo.getImei()
-                    +"&app_id=" + appInfo.getAppId())
+            return RequestBuilder.createRequest(PATH_USER + accountInfo.getImei())
                     .get();
         } catch (BaseException e) {
             Log.e(TAG, e.toString());
-        }
-
+        }*/
         return null;
     }
 }

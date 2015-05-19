@@ -1,4 +1,4 @@
-package me.toufu.appsdklib.http;
+package toufu.appsdkservice.http;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -133,13 +133,7 @@ public class Request implements Runnable {
     @Override
     public void run() {
         try {
-            final String response = doRequest();
-            runOnUi(new Runnable() {
-                @Override
-                public void run() {
-                    mCallback.onSuccess(response);
-                }
-            });
+            doRequest();
         } catch (final BaseException e) {
             if (mCallback != null) {
                 runOnUi(new Runnable() {

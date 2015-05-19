@@ -1,21 +1,36 @@
 package me.toufu.appdemo;
 
 import android.app.AlertDialog;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import me.toufu.appsdklib.http.BaseException;
+import me.toufu.appsdklib.http.ICallback;
+import me.toufu.appsdklib.http.RequestBuilder;
 import me.toufu.sdk.Platform;
 import me.toufu.sdk.ValidateResponse;
 
 
 public class MainActivity extends ActionBarActivity {
+    private static final String TAG = "MainActivity";
+
+    private Handler mUiHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Platform.init(MainActivity.this, AppConstants.appId, AppConstants.appKey);
 
         Platform.validateApp(MainActivity.this, new ValidateResponse() {
