@@ -11,26 +11,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="验证应用" />
+        android:text="验证应用"
+        android:textSize="@dimen/mainButtonSize" />
 
     <Button
         android:id="@+id/buttonBuyConsumer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="购买一次性产品" />
+        android:text="购买一次性产品"
+        android:textSize="@dimen/mainButtonSize" />
 
     <Button
         android:id="@+id/buttonBuyNotConsumer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="购买可重复的产品" />
+        android:text="购买可重复的产品"
+        android:textSize="@dimen/mainButtonSize" />
 
     <Button
         android:id="@+id/buttonObtainList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="获取产品列表" />
+        android:text="获取产品列表"
+        android:textSize="@dimen/mainButtonSize" />
 </LinearLayout>

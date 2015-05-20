@@ -24,6 +24,17 @@ public class ProductInfo implements Parcelable{
         }
     }
 
+    public String toJsonStr() throws JSONException {
+        JSONObject productObj = new JSONObject();
+        productObj.put("description", description);
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0; i<subProducts.length; i++) {
+            jsonArray.put(i, subProducts[i].toJsonObj());
+        }
+        productObj.put("subProducts", jsonArray);
+        return productObj.toString();
+    }
+
     @Override
     public int describeContents() {
         return 0;

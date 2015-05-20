@@ -12,7 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import me.toufu.sdk.PayResponse;
+import me.toufu.sdk.TradeRecordResponse;
 import me.toufu.sdk.ValidateResponse;
 import me.toufu.sdk.service.IPayResponse;
 import me.toufu.sdk.service.IPlatformService;
@@ -32,6 +35,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setTitle("使用样例");
 
         Button button = (Button) findViewById(R.id.buttonValidate);
         button.setOnClickListener(this);
@@ -98,6 +103,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 buyConsumer();
                 break;
             case R.id.buttonBuyNotConsumer:
+                buyNotConsumer();
                 break;
             case R.id.buttonObtainList:
                 obtainList();
@@ -138,8 +144,29 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         try {
             mPlatformService.pay("1", "865863020125972", "1", new IPayResponse.Stub() {
                 @Override
-                public void onResult(int code, String content) throws RemoteException {
+                public void onResult(final int code, String content) throws RemoteException {
+                    if (code == PayResponse.RESULT_SUCCESS) {
+                        showToast("购买成功，应用进行相应处理");
+                    } else {
+                        showToast(content);
+                    }
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void buyNotConsumer() {
+        try {
+            mPlatformService.pay("1", "865863020125972", "2", new IPayResponse.Stub() {
+                @Override
+                public void onResult(int code, String content) throws RemoteException {
+                    if (code == PayResponse.RESULT_SUCCESS) {
+                        showToast("购买成功，应用进行相应处理");
+                    } else {
+                        showToast(content);
+                    }
                 }
             });
         } catch (RemoteException e) {
@@ -151,11 +178,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         try {
             mPlatformService.obtainTradeRecords("", new ITradeRecordResponse.Stub() {
                 @Override
-                public void onResult(int code, final String message, final String productInfo) throws RemoteException {
+                public void onResult(final int code, final String message, final String productInfo) throws RemoteException {
                     runOnUi(new Runnable() {
                         @Override
                         public void run() {
-                            WidgetHelper.showMessageDialog(MainActivity.this, message, productInfo);
+                            if (code == TradeRecordResponse.TRADE_RESULT_NOPROBLEM) {
+                                Intent intent = new Intent(MainActivity.this, TradeListActivity.class);
+                                intent.putExtra("productInfo", productInfo);
+                                startActivity(intent);
+                            } else {
+                                WidgetHelper.showMessageDialog(MainActivity.this, "获取错误", message);
+                            }
                         }
                     });
                 }
@@ -165,9 +198,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    private void showToast(final String message) {
+        runOnUi(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     private void runOnUi(Runnable r) {
         mUiHandler.post(r);
     }
-
-
 }

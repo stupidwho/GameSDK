@@ -8,13 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pingplusplus.libone.PayActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import me.toufu.appsdkservice.R;
 
@@ -28,6 +26,8 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_t_pay);
+
+        getSupportActionBar().setTitle("产品");
 
         mOrderText = (TextView) findViewById(R.id.textOrder);
         mConfirmButton = (Button) findViewById(R.id.buttonBuyConfirm);
@@ -77,12 +77,9 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PayActivity.PAYACTIVITY_REQUEST_CODE) {
             if (resultCode == PayActivity.PAYACTIVITY_RESULT_CODE) {
-                Toast.makeText(
-                        this,
-                        data.getExtras().getString("result") + "  "
-                                + data.getExtras().getInt("code"),
-                        Toast.LENGTH_LONG).show();
-                data.getExtras().getInt("code");// 1成功；-1失败；0取消
+                mOrderText.setText(data.getExtras().getString("result")
+                        + "  "
+                        + data.getExtras().getInt("code"));
             }
         }
     }
@@ -116,11 +113,12 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
             String display = "[{\"name\":\"商品\",\"contents\":[" + des + "]},]";
             payObj.put("display", display);
 
-            extraObj.put("appInfo",appInfo);
+            extraObj.put("appInfo", appInfo);
             extraObj.put("accountInfo", accountInfo);
             extraObj.put("orderInfo", orderInfo);
             payObj.put("extras", extraObj.toString());
             String bill = payObj.toString();
+//            bill = " {\"order_no\":\"201503230255221\",\"amount\":10,\"display\":[{\"name\":\"商品\",\"contents\":[\"橡胶花盆 x 1\",\"搪瓷水壶 x 1\",\"扫把和簸箕 x 1\"]}]}";
             PayActivity.CallPayActivity(this, bill, PayConstants.URL);
         } catch (JSONException e) {
             e.printStackTrace();

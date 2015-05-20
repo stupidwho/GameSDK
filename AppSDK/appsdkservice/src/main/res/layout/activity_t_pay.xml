@@ -24,5 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="确认购买" />
+        android:text="确认购买"
+        android:textSize="20sp" />
 </RelativeLayout>

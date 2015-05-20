@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">魅族游戏 SDK Demo 程序</string>
+    <string name="login">登录</string>
+    <string name="buy">购买</string>
+
+</resources>
