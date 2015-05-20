@@ -14,17 +14,17 @@ import android.view.View;
 import android.widget.Button;
 
 import me.toufu.sdk.ValidateResponse;
+import me.toufu.sdk.service.IPayResponse;
 import me.toufu.sdk.service.IPlatformService;
+import me.toufu.sdk.service.ITradeRecordResponse;
 import me.toufu.sdk.service.IValidateResponse;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
 
     private ServiceConnection mServiceConnection;
     private IPlatformService mPlatformService;
-
-    private Button button;
 
     private Handler mUiHandler = new Handler();
 
@@ -33,38 +33,14 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    mPlatformService.validateApp(new IValidateResponse.Stub() {
-                        @Override
-                        public void onResult(final int code, final String content) throws RemoteException {
-                            runOnUi(new Runnable() {
-                                @Override
-                                public void run() {
-                                    switch (code) {
-                                        case ValidateResponse.RESULT_NOPROBLEM:
-                                            break;
-                                        case ValidateResponse.RESULT_ERROR_NETWORK_UNAVAILABLE:
-                                            break;
-                                        case ValidateResponse.RESULT_ERROR_UNKNOWN:
-                                            break;
-                                        case ValidateResponse.RESULT_ERROR_VALIDATE:
-                                            break;
-                                    }
-                                    WidgetHelper.showMessageDialog(MainActivity.this, "验证结果：", content);
-                                }
-                            });
-
-                        }
-                    });
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        Button button = (Button) findViewById(R.id.buttonValidate);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.buttonBuyConsumer);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.buttonBuyNotConsumer);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.buttonObtainList);
+        button.setOnClickListener(this);
 
         mServiceConnection = new ServiceConnection() {
             @Override
@@ -112,7 +88,86 @@ public class MainActivity extends ActionBarActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonValidate:
+                validateApp();
+                break;
+            case R.id.buttonBuyConsumer:
+                buyConsumer();
+                break;
+            case R.id.buttonBuyNotConsumer:
+                break;
+            case R.id.buttonObtainList:
+                obtainList();
+                break;
+        }
+    }
+
+    private void validateApp() {
+        try {
+            mPlatformService.validateApp(new IValidateResponse.Stub() {
+                @Override
+                public void onResult(final int code, final String content) throws RemoteException {
+                    runOnUi(new Runnable() {
+                        @Override
+                        public void run() {
+                            switch (code) {
+                                case ValidateResponse.RESULT_NOPROBLEM:
+                                    break;
+                                case ValidateResponse.RESULT_ERROR_NETWORK_UNAVAILABLE:
+                                    break;
+                                case ValidateResponse.RESULT_ERROR_UNKNOWN:
+                                    break;
+                                case ValidateResponse.RESULT_ERROR_VALIDATE:
+                                    break;
+                            }
+                            WidgetHelper.showMessageDialog(MainActivity.this, "验证结果：", content);
+                        }
+                    });
+
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void buyConsumer() {
+        try {
+            mPlatformService.pay("1", "865863020125972", "1", new IPayResponse.Stub() {
+                @Override
+                public void onResult(int code, String content) throws RemoteException {
+
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void obtainList() {
+        try {
+            mPlatformService.obtainTradeRecords("", new ITradeRecordResponse.Stub() {
+                @Override
+                public void onResult(int code, final String message, final String productInfo) throws RemoteException {
+                    runOnUi(new Runnable() {
+                        @Override
+                        public void run() {
+                            WidgetHelper.showMessageDialog(MainActivity.this, message, productInfo);
+                        }
+                    });
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void runOnUi(Runnable r) {
         mUiHandler.post(r);
     }
+
+
 }

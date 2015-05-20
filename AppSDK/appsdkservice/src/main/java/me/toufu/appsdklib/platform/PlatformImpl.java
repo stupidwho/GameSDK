@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
 
+import com.pingplusplus.libone.PayActivity;
+
 import me.toufu.appsdklib.platform.model.LicenseInfo;
 import me.toufu.appsdklib.utils.PhoneUtil;
 import me.toufu.sdk.AccountInfo;

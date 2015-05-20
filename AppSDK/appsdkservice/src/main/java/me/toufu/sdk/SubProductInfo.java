@@ -27,6 +27,16 @@ public class SubProductInfo implements Parcelable{
         description = obj.getString("description");
     }
 
+    public JSONObject toJsonObj() throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("isConsumer",isConsumer);
+        obj.put("price", price);
+        obj.put("subId", subId);
+        obj.put("num", num);
+        obj.put("description", description);
+        return obj;
+    }
+
     @Override
     public int describeContents() {
         return 0;
