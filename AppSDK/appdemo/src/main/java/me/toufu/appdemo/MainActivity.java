@@ -24,8 +24,6 @@ import me.toufu.sdk.ValidateResponse;
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
 
-    private Handler mUiHandler = new Handler(Looper.getMainLooper());
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

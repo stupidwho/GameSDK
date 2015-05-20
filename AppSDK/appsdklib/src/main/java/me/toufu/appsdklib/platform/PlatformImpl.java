@@ -62,15 +62,15 @@ public class PlatformImpl {
 
     public void obtainTradeRecords(Context context, TradeRecordResponse tradeRecordResponse) {
         ValidateManager validateManager = new ValidateManager(context);
-        ProductInfo productInfo = getListProductInfo(validateManager.getContentFromLocal());
+        ProductInfo productInfo = getProductInfo(validateManager.getContentFromLocal());
         if (productInfo != null) {
             tradeRecordResponse.onResult(TradeRecordResponse.TRADE_RESULT_NOPROBLEM, "获取成功", productInfo);
         } else {
-            tradeRecordResponse.onResult(TradeRecordResponse.TRADE_RESULT_ERROR_FORMAT, "解析错误", null);
+            tradeRecordResponse.onResult(TradeRecordResponse.TRADE_RESULT_ERROR_FORMAT, "读取失败", null);
         }
     }
 
-    private ProductInfo getListProductInfo(LicenseInfo info) {
+    private ProductInfo getProductInfo(LicenseInfo info) {
         return info.productInfo;
     }
 

@@ -6,10 +6,7 @@ package me.toufu.appdemo;
 public class AppConstants {
     public static final String appId = "1";
     public static final String appKey =
-            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDtd1lKsX6ylsAEWFi7E/ut8krJ\n" +
-            "y9PQ7sGYKhIm9TvIdZiq5xzyaw8NOLzKZ1k486MePYG4tSuoaxSbwuPLwVUzYFvn\n" +
-            "UZo7aWCIGKn16UWTM4nxc/+dwce+bhcKrlLbTWi8l580LTE7GxclTh8z7gHq59iv\n" +
-            "haoGbK7FNxlUfB4TSQIDAQAB";
+                            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDtd1lKsX6ylsAEWFi7E/ut8krJy9PQ7sGYKhIm9TvIdZiq5xzyaw8NOLzKZ1k486MePYG4tSuoaxSbwuPLwVUzYFvnUZo7aWCIGKn16UWTM4nxc/+dwce+bhcKrlLbTWi8l580LTE7GxclTh8z7gHq59ivhaoGbK7FNxlUfB4TSQIDAQAB";
     public static final String privateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKOuUlVJ6z7aekVulpolekd5+EMV\n" +
             "6I4Iup/zOLAQxKvZbb3bDIYtI7F0S6t0qbSPV6m7y83mKmBtY9+sJV7P0HOHnSUcB944wpkKRVtX\n" +
             "RDjEMgpwMUfl3hF3jKObkeMCOEsYNApqHIG/9ud0sGvstF9qrXjPDP+Wyv4dt/MZZARzAgMBAAEC\n" +

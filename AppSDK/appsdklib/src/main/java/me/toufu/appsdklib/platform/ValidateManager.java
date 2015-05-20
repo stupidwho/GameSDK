@@ -36,7 +36,8 @@ public class ValidateManager {
             if (isLegal(aimContent)) {
                 mValidateResult.code = ValidateResponse.RESULT_NOPROBLEM;
                 mValidateResult.message = "验证无误";
-                FileManager.saveLicense(mContext, aimContent.toString());
+                String appId = AppInfoManager.getInstance().appInfo.getAppId();
+                FileManager.saveLicense(mContext, appId, aimContent.getContent());
             } else {
                 mValidateResult.code = ValidateResponse.RESULT_ERROR_VALIDATE;
                 mValidateResult.message = "签名不合法";
@@ -53,7 +54,8 @@ public class ValidateManager {
 
     public LicenseInfo getContentFromLocal() {
         // 从本地获取数据
-        String content = FileManager.getLicense(mContext);
+        String appId = AppInfoManager.getInstance().appInfo.getAppId();
+        String content = FileManager.getLicense(mContext, appId);
         return getLicenseInfoFromString(content);
     }
 
@@ -62,6 +64,9 @@ public class ValidateManager {
         if (info != null) {
             if (ValidateHelper.validateSignature(info)) {
                 return info;
+            } else {
+                mValidateResult.code = ValidateResponse.RESULT_ERROR_VALIDATE;
+                mValidateResult.message = "内容验证失败";
             }
         }
         return null;

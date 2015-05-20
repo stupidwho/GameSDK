@@ -10,16 +10,13 @@ public class LicenseInfo {
     public String content;
 
     public long timeStamp;
+    public String packageName;
     public String appId;
-    public String appKey;
-    public String pkgName;
-
     public String imei;
-    public String sn;
 
     public ProductInfo productInfo;
 
-    public String toString() {
+    public String getContent() {
         return null;
     }
 }

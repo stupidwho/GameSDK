@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter;
  */
 public class FileManager {
     public static final String LICENSE_DIR = "toufu_sdk_license";
-    public static final String LICENSE_FILE = "toufu_license";
+    public static final String LICENSE_FILE = "toufu_license_";
 
     /**
      * 从文件读取license字符串，如果不存在则返回空，会文件夹、文件不存在会创建自动创建
@@ -22,11 +22,11 @@ public class FileManager {
      * @param context
      * @return
      */
-    public static String getLicense(Context context) {
+    public static String getLicense(Context context, String appId) {
         File rootDir = context.getFilesDir();
         File licenseDir = new File(rootDir, LICENSE_DIR);
         if (licenseDir.exists() && licenseDir.isDirectory()) {
-            File licenseFile = new File(licenseDir, LICENSE_FILE);
+            File licenseFile = new File(licenseDir, LICENSE_FILE + appId);
             if (licenseFile.exists() && licenseFile.isFile()) {
                 FileInputStream fis = null;
                 InputStreamReader isr = null;
@@ -69,12 +69,12 @@ public class FileManager {
         return null;
     }
 
-    public static boolean saveLicense(Context context, String content) {
+    public static boolean saveLicense(Context context, String appId, String content) {
         File rootDir = context.getFilesDir();
         File licenseDir = new File(rootDir, LICENSE_DIR);
         if (!licenseDir.exists())
             licenseDir.mkdirs();
-        File licenseFile = new File(licenseDir, LICENSE_FILE);
+        File licenseFile = new File(licenseDir, LICENSE_FILE + appId);
         if (!licenseFile.exists()) {
             try {
                 licenseFile.createNewFile();
