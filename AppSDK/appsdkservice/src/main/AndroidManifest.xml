@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.toufu.appsdklib" >
+    package="me.toufu.appsdkservice" >
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -8,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="me.toufu.appsdklib.MainActivity"
+            android:name="me.toufu.appsdkservice.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +22,12 @@
         </activity>
 
         <service
-            android:name="me.toufu.appsdklib.PlatformService"
+            android:name="me.toufu.appsdkservice.PlatformService"
             android:enabled="true"
             android:exported="true" >
+            <intent-filter>
+                <action android:name="me.toufu.sdk.action.service" />
+            </intent-filter>
         </service>
     </application>
 
