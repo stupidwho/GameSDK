@@ -2,6 +2,8 @@ package me.toufu.appsdklib.platform;
 
 import android.content.Context;
 
+import org.json.JSONException;
+
 import me.toufu.appsdklib.platform.model.LicenseInfo;
 import me.toufu.appsdklib.utils.NetworkUtil;
 import me.toufu.appsdklib.utils.SignatureUtil;
@@ -33,11 +35,15 @@ public class ValidateManager {
         LicenseInfo contentLocal = getContentFromLocal();
         LicenseInfo aimContent = compareContent(contentLocal, contentNet);
         if (aimContent != null) {
-            if (isLegal(aimContent)) {
+            if (ValidateHelper.validateSignature(aimContent)) {
                 mValidateResult.code = ValidateResponse.RESULT_NOPROBLEM;
                 mValidateResult.message = "验证无误";
                 String appId = AppInfoManager.getInstance().appInfo.getAppId();
-                FileManager.saveLicense(mContext, appId, aimContent.getContent());
+                try {
+                    FileManager.saveLicense(mContext, appId, aimContent.getAll());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } else {
                 mValidateResult.code = ValidateResponse.RESULT_ERROR_VALIDATE;
                 mValidateResult.message = "签名不合法";
@@ -61,15 +67,7 @@ public class ValidateManager {
 
     public LicenseInfo getLicenseInfoFromString(String content) {
         LicenseInfo info = ValidateHelper.parseLicenseInfo(content);
-        if (info != null) {
-            if (ValidateHelper.validateSignature(info)) {
-                return info;
-            } else {
-                mValidateResult.code = ValidateResponse.RESULT_ERROR_VALIDATE;
-                mValidateResult.message = "内容验证失败";
-            }
-        }
-        return null;
+        return info;
     }
 
     private LicenseInfo compareContent(LicenseInfo contentLocal, LicenseInfo contentNet) {
@@ -81,11 +79,5 @@ public class ValidateManager {
         mValidateResult.code = ValidateResponse.RESULT_ERROR_PARSE;
         mValidateResult.message = "内容解析错误";
         return null;
-    }
-
-    // 验证签名是否合法
-    private boolean isLegal(LicenseInfo info) {
-        String content = "";
-        return SignatureUtil.isSignatureLegal(null, null, null);
     }
 }

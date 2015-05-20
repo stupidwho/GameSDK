@@ -84,27 +84,21 @@ public class FileManager {
         }
         if (licenseFile.exists() && licenseFile.isFile()) {
             FileOutputStream fos = null;
-            OutputStreamWriter osw = null;
             try {
                 fos = new FileOutputStream(licenseFile);
-                osw = new OutputStreamWriter(fos);
-                osw.write(content);
+                fos.write(content.getBytes());
+                fos.flush();
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if (fos != null)
+                if (fos != null) {
                     try {
                         fos.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                if (osw != null)
-                    try {
-                        osw.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                }
             }
         }
 

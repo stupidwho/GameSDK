@@ -1,5 +1,8 @@
 package me.toufu.appsdklib.platform.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import me.toufu.sdk.ProductInfo;
 
 /**
@@ -16,7 +19,10 @@ public class LicenseInfo {
 
     public ProductInfo productInfo;
 
-    public String getContent() {
-        return null;
+    public String getAll() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put("signature", signature);
+        object.put("content", content);
+        return object.toString();
     }
 }
