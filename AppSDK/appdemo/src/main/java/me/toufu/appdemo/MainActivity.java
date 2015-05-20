@@ -100,10 +100,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 validateApp();
                 break;
             case R.id.buttonBuyConsumer:
-                buyConsumer();
+                buyNoneConsumer();
                 break;
             case R.id.buttonBuyNotConsumer:
-                buyNotConsumer();
+                buyConsumer();
                 break;
             case R.id.buttonObtainList:
                 obtainList();
@@ -112,6 +112,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void validateApp() {
+        if (mPlatformService == null)
+            return;
         try {
             mPlatformService.validateApp(new IValidateResponse.Stub() {
                 @Override
@@ -141,6 +143,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void buyConsumer() {
+        if (mPlatformService == null)
+            return;
         try {
             mPlatformService.pay("1", "865863020125972", "1", new IPayResponse.Stub() {
                 @Override
@@ -157,7 +161,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
-    private void buyNotConsumer() {
+    private void buyNoneConsumer() {
+        if (mPlatformService == null)
+            return;
         try {
             mPlatformService.pay("1", "865863020125972", "2", new IPayResponse.Stub() {
                 @Override
@@ -175,6 +181,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void obtainList() {
+        if (mPlatformService == null)
+            return;
         try {
             mPlatformService.obtainTradeRecords("", new ITradeRecordResponse.Stub() {
                 @Override

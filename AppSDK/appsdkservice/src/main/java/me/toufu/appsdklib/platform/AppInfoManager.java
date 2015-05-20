@@ -1,5 +1,6 @@
 package me.toufu.appsdklib.platform;
 
+import me.toufu.appsdklib.platform.model.LicenseInfo;
 import me.toufu.sdk.AccountInfo;
 import me.toufu.sdk.AppInfo;
 
@@ -22,4 +23,6 @@ public class AppInfoManager {
     public AppInfo appInfo;
     // 记录用户相关信息，暂时以手机区分用户
     public AccountInfo accountInfo;
+
+    public LicenseInfo licenseInfo;
 }

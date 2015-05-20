@@ -104,6 +104,18 @@ public class Request implements Runnable {
         postIntoThread();
     }
 
+    public void asyncPost(ICallback callback) {
+        HttpPost post = new HttpPost(mUrl);
+        try {
+            post.setEntity(new UrlEncodedFormEntity(mParams, HTTP.UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        mUriRequest = post;
+        mCallback = callback;
+        postIntoThread();
+    }
+
     private void postIntoThread() {
         HttpManager.getInstance().runOnThread(this);
     }

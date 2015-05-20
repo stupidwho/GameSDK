@@ -39,6 +39,7 @@ public class ValidateManager {
                 mValidateResult.message = "验证无误";
                 String appId = AppInfoManager.getInstance().appInfo.getAppId();
                 try {
+                    AppInfoManager.getInstance().licenseInfo = aimContent;
                     FileManager.saveLicense(mContext, appId, aimContent.getAll());
                 } catch (JSONException e) {
                     e.printStackTrace();

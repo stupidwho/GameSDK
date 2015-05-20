@@ -1,25 +1,63 @@
 ECLIPSE ANDROID PROJECT IMPORT SUMMARY
 ======================================
 
+ * Project
+   bdwallet_pay_sdk:/home/toufu/Projects/pingpp-android/lib/bdwallet_pay_sdk/.cl
+   sspath:
+   Could not resolve source path src in project bdwallet_pay_sdk: ignored. The
+   project may not compile if the given source path provided source code.
+
+
 Ignored Files:
 --------------
 The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
-* .gitignore
+* .checkstyle
+* ant.properties
+* build.xml
+* dev.keystore
+* ic_launcher-web.png
 * proguard-project.txt
+* proguard.cfg
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:21.+
 
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => mzgamedemo/src/main/AndroidManifest.xml
-* assets/ => mzgamedemo/src/main/assets/
-* libs/MzGameCenterLib_1.3.3_p.jar => mzgamedemo/libs/MzGameCenterLib_1.3.3_p.jar
-* res/ => mzgamedemo/src/main/res/
-* src/ => mzgamedemo/src/main/java/
+* AndroidManifest.xml => bdwallet_pay_sdk/src/main/AndroidManifest.xml
+* libs/armeabi/libbd_wsp_v1_0.so => bdwallet_pay_sdk/src/main/jniLibs/armeabi/libbd_wsp_v1_0.so
+* libs/paySDk3.4.1.jar => bdwallet_pay_sdk/libs/paySDk3.4.1.jar
+* libs/x86/libbd_wsp_v1_0.so => bdwallet_pay_sdk/src/main/jniLibs/x86/libbd_wsp_v1_0.so
+* res/ => bdwallet_pay_sdk/src/main/res/
+
+Missing Android Support Repository:
+-----------------------------------
+Some useful libraries, such as the Android Support Library, are
+installed from a special Maven repository, which should be installed
+via the SDK manager.
+
+It looks like this library is missing from your SDK installation at:
+null
+
+To install it, open the SDK manager, and in the Extras category,
+select "Android Support Repository". You may also want to install the
+"Google Repository" if you want to use libraries like Google Play
+Services.
 
 Next Steps:
 -----------

@@ -16,7 +16,7 @@ public class SubProductInfo implements Parcelable{
     public boolean isConsumer;
     public int price;
     public String subId;
-    public long num;
+    public int num;
     public String description;
 
     public SubProductInfo(JSONObject obj) throws JSONException {

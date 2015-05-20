@@ -14,12 +14,23 @@ import com.pingplusplus.libone.PayActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import me.toufu.appsdklib.http.BaseException;
+import me.toufu.appsdklib.http.ICallback;
+import me.toufu.appsdklib.http.RequestBuilder;
+import me.toufu.appsdklib.platform.AppInfoManager;
+import me.toufu.appsdklib.utils.WidgetHelper;
 import me.toufu.appsdkservice.R;
+import me.toufu.sdk.SubProductInfo;
+import me.toufu.sdk.TaskHelper;
 
 
 public class TPayActivity extends ActionBarActivity implements View.OnClickListener {
 
-    private TextView mOrderText;
+    private TextView appText;
+    private TextView imeiText;
+    private TextView desText;
+    private TextView typeText;
+    private TextView priceText;
     private Button mConfirmButton;
 
     @Override
@@ -29,24 +40,47 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
 
         getSupportActionBar().setTitle("产品");
 
-        mOrderText = (TextView) findViewById(R.id.textOrder);
-        mConfirmButton = (Button) findViewById(R.id.buttonBuyConfirm);
+        appText = (TextView) findViewById(R.id.textApp);
+        imeiText = (TextView) findViewById(R.id.textAccount);
+        desText = (TextView) findViewById(R.id.textDes);
+        typeText = (TextView) findViewById(R.id.textType);
+        priceText = (TextView) findViewById(R.id.textPrice);
 
+        mConfirmButton = (Button) findViewById(R.id.buttonBuyConfirm);
         mConfirmButton.setOnClickListener(this);
-        mOrderText.setText(constructOrderShow());
+
+        showOrderInfo();
     }
 
-    private String constructOrderShow() {
+    private void showOrderInfo() {
         Intent intent = getIntent();
 
         String appInfo = intent.getStringExtra("appInfo");
         String accountInfo = intent.getStringExtra("accountInfo");
         String orderInfo = intent.getStringExtra("orderInfo");
-        String content = "订单信息：\n";
-        content += "应用id号：" + appInfo + "\n";
-        content += "账户imei：" + accountInfo + "\n";
-        content += "产品id：" + orderInfo;
-        return content;
+        String des = "描述：";
+        String price = "单价：";
+        String type = "产品类型：";
+        try {
+            SubProductInfo subProduct = new SubProductInfo(new JSONObject(orderInfo));
+            des += subProduct.description;
+            price += subProduct.price;
+            if (subProduct.isConsumer) {
+                type += "可重复购买";
+            } else {
+                type += "不可重复购买";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        appInfo = "应用id号：" + appInfo;
+        accountInfo = "账户imei：" + accountInfo;
+
+        appText.setText(appInfo);
+        imeiText.setText(accountInfo);
+        desText.setText(des);
+        typeText.setText(type);
+        priceText.setText(price);
     }
 
 
@@ -77,9 +111,33 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PayActivity.PAYACTIVITY_REQUEST_CODE) {
             if (resultCode == PayActivity.PAYACTIVITY_RESULT_CODE) {
-                mOrderText.setText(data.getExtras().getString("result")
+                WidgetHelper.showMessageDialog(this, "支付结果",
+                        data.getExtras().getString("result")
                         + "  "
                         + data.getExtras().getInt("code"));
+                if (data.getExtras().getInt("code") == 1) {
+                    SubProductInfo info = AppInfoManager.getInstance().licenseInfo.productInfo.subProducts[0];
+                    info.num ++;
+                    try {
+                        RequestBuilder.createRequest("r=user/update&id=1")
+                                .paramte("imei", AppInfoManager.getInstance().accountInfo.getImei())
+                                .paramte("app_id", AppInfoManager.getInstance().appInfo.getAppId())
+                                .paramte("products_record",info.toJsonObj().toString())
+                                .asyncPost(new ICallback() {
+                                    @Override
+                                    public void onSuccess(String content) {
+
+                                    }
+
+                                    @Override
+                                    public void onError(BaseException exception) {
+
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -104,7 +162,7 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
         try {
             payObj.put("order_no", "" + System.currentTimeMillis());
             payObj.put("amount", 1);
-            String des = "";
+            String des;
             if (orderInfo.equals("1")) {
                 des = "订阅xx报纸";
             } else {

@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -13,6 +14,7 @@ import me.toufu.appsdklib.platform.pay.TPayActivity;
 import me.toufu.sdk.AccountInfo;
 import me.toufu.sdk.Platform;
 import me.toufu.sdk.ProductInfo;
+import me.toufu.sdk.SubProductInfo;
 import me.toufu.sdk.TradeRecordResponse;
 import me.toufu.sdk.ValidateResponse;
 import me.toufu.sdk.service.IPayResponse;
@@ -52,7 +54,24 @@ public class PlatformService extends Service {
             Intent intent = new Intent(PlatformService.this, TPayActivity.class);
             intent.putExtra("appInfo", appInfo);
             intent.putExtra("accountInfo", accountInfo);
-            intent.putExtra("orderInfo", orderInfo);
+
+            SubProductInfo subProducts[] = AppInfoManager.getInstance().licenseInfo.productInfo.subProducts;
+            if (subProducts == null) {
+                Toast.makeText(PlatformService.this, "请先验证应用",Toast.LENGTH_LONG).show();
+                return;
+            }
+            String orderStr = "{}";
+            for(SubProductInfo item : subProducts) {
+                if (item.subId.equals(orderInfo)) {
+                    try {
+                        orderStr = item.toJsonObj().toString();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+            intent.putExtra("orderInfo", orderStr);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }

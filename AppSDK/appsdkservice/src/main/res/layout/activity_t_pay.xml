@@ -1,22 +1,59 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="me.toufu.appsdklib.platform.pay.TPayActivity">
 
-
     <TextView
-        android:id="@+id/textOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="订单信息"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/textApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="应用"
+        android:textSize="@dimen/orderTextSize" />
+
+    <TextView
+        android:id="@+id/textAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/orderTextMarginTop"
+        android:text="账户"
+        android:textSize="@dimen/orderTextSize" />
+
+    <TextView
+        android:id="@+id/textDes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/orderTextMarginTop"
+        android:text="描述"
+        android:textSize="@dimen/orderTextSize" />
+
+    <TextView
+        android:id="@+id/textType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/orderTextMarginTop"
+        android:text="类别"
+        android:textSize="@dimen/orderTextSize" />
+
+    <TextView
+        android:id="@+id/textPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/orderTextMarginTop"
+        android:text="单价"
+        android:textSize="@dimen/orderTextSize" />
 
     <Button
         android:id="@+id/buttonBuyConfirm"
@@ -25,5 +62,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="确认购买"
+        android:layout_marginTop="210dp"
         android:textSize="20sp" />
-</RelativeLayout>
+</LinearLayout>

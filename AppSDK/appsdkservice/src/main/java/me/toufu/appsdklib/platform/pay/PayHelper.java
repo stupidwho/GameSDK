@@ -12,7 +12,7 @@ public class PayHelper {
         //打开微信支付按钮
         PayActivity.SHOW_CHANNEL_WECHAT = true;
         //打开银联支付按钮
-        PayActivity.SHOW_CHANNEL_UPMP = false;
+        PayActivity.SHOW_CHANNEL_UPMP = true;
         //打开百度支付按钮
         PayActivity.SHOW_CHANNEL_BFB = true;
         //打开支付宝按钮
