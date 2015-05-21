@@ -11,6 +11,7 @@ import org.json.JSONException;
 
 import me.toufu.appsdklib.platform.AppInfoManager;
 import me.toufu.appsdklib.platform.pay.TPayActivity;
+import me.toufu.appsdklib.utils.WidgetHelper;
 import me.toufu.sdk.AccountInfo;
 import me.toufu.sdk.Platform;
 import me.toufu.sdk.ProductInfo;
@@ -57,12 +58,16 @@ public class PlatformService extends Service {
 
             SubProductInfo subProducts[] = AppInfoManager.getInstance().licenseInfo.productInfo.subProducts;
             if (subProducts == null) {
-                Toast.makeText(PlatformService.this, "请先验证应用",Toast.LENGTH_LONG).show();
+                Toast.makeText(PlatformService.this, "请先验证应用", Toast.LENGTH_LONG).show();
                 return;
             }
             String orderStr = "{}";
-            for(SubProductInfo item : subProducts) {
+            for (SubProductInfo item : subProducts) {
                 if (item.subId.equals(orderInfo)) {
+                    if (item.isConsumer && item.num > 0) {
+                        WidgetHelper.showMessageDialog(PlatformService.this, "警告", "不可重复购买");
+                        return;
+                    }
                     try {
                         orderStr = item.toJsonObj().toString();
                     } catch (JSONException e) {

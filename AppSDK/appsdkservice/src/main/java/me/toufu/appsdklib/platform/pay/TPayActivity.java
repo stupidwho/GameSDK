@@ -120,6 +120,7 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
                     info.num ++;
                     try {
                         RequestBuilder.createRequest("r=user/update&id=1")
+                                .paramte("id", "1")
                                 .paramte("imei", AppInfoManager.getInstance().accountInfo.getImei())
                                 .paramte("app_id", AppInfoManager.getInstance().appInfo.getAppId())
                                 .paramte("products_record",info.toJsonObj().toString())
@@ -161,7 +162,7 @@ public class TPayActivity extends ActionBarActivity implements View.OnClickListe
         JSONObject extraObj = new JSONObject();
         try {
             payObj.put("order_no", "" + System.currentTimeMillis());
-            payObj.put("amount", 1);
+            payObj.put("amount", 1*100);
             String des;
             if (orderInfo.equals("1")) {
                 des = "订阅xx报纸";
